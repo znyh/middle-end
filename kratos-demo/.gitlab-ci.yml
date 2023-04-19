@@ -1,0 +1,61 @@
+variables:
+  REPO_HARBOR: "aaa.com"
+  REPO_HARBOR_USER: "root"
+  REPO_HARBOR_PASS: "abc123456"
+  REPO_PROJECT: "kratos-demo"
+  IMAGE_VERSION: "0.0.1"
+
+stages:
+  - compile
+  - build
+  - deploy
+
+compile:
+  stage: compile
+  tags:
+    - kratos-demo-runner
+  only:
+    - main
+  artifacts:
+    paths:
+      - cmd
+  image: kratos-demo #repo.qianz.com/middle-end/golangandgit:ci-package
+  before_script:
+    - echo "This job do something. at compile before_script."
+    #- go version
+  script:
+    - echo "go mod tidy && cd cmd && go build"
+    #- echo "machine aaa.com login root  password NRL97xyK6LsPuhYC-xjA" > $HOME/.netrc
+    #- go mod tidy && cd cmd && go build
+
+build_image:
+  stage: build
+  tags:
+    - kratos-demo-runner
+  only:
+    - main
+  before_script:
+    - echo "This job do something. at build before_script."
+    #- docker login -u $REPO_HARBOR_USER -p $REPO_HARBOR_PASS $REPO_HARBOR
+  script:
+    - echo $(pwd)
+    - docker build -t ${REPO_PROJECT}:$IMAGE_VERSION .
+    - echo "Build end"  # 镜像构建完成
+
+deploy:
+  stage: deploy
+  tags:
+    - kratos-demo-runner
+  only:
+    - main
+  dependencies:
+    - build_image
+  image: kratos-demo #git.huoys.com:9999/wuyc/kubectl-helm:huoys-dev
+  script:
+    - docker rm -f ${REPO_PROJECT}
+    #- if [ $(docker ps -aq --filter name= hello) ]; then docker rm -f my-hello;fi
+    #- docker run -d --name hello hello:v0.0.1
+    #- docker run -d --name ${REPO_PROJECT}:$IMAGE_VERSION ${REPO_PROJECT}:$IMAGE_VERSION
+    - docker run -d -p 8000:8000 -p 9000:9000 -v /data/conf:/data/conf --name ${REPO_PROJECT} ${REPO_PROJECT}:$IMAGE_VERSION
+    #- docker push ${REPO_PROJECT}:${IMAGE_VERSION}
+    - echo "deploy end"  # 镜像部署完成

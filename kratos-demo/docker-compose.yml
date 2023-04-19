@@ -1,0 +1,17 @@
+version: "3"
+services:
+  my-hello:
+    #docker run -d -p 8000:8000 -p 9000:9000 -v /data/conf:/data/conf --name kratos-demo:0.0.0
+    image: kratos-demo
+    container_name: kratos-demo:0.0.0
+    restart: always
+    environment:
+      - HTTP_PORT:8000
+    #command: ./opt/cmd -conf /opt/configs/
+    volumes:
+      - /data/conf:/data/conf
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+
+
