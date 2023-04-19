@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package api.calculator.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "calculator/api/calculator/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.calculator.v1";
+
+service Calculator {
+  rpc Calc(CalcReq) returns (CalcRsp) {
+    option (google.api.http) = {
+      post: "/api/calc"
+      body: "*"
+    };
+  };
+}
+
+message CalcReq {
+  message CalcBody{
+    bool close = 1;            //是否关闭
+    int32 kind = 2;            //1，2
+    bool continue = 3;         //是否连牌
+    repeated Item items = 4;   //配置
+  }
+  CalcBody calc_body = 1;
+}
+
+message Item {
+  int32 master = 1;
+  int32 slave = 2;
+  int32 shun = 3;
+  int32 ke = 4;
+  int32 dui = 5;
+  int32 ca = 6;
+}
+
+message CalcRsp {
+  string conf = 1;
+  string desc1 = 2;
+  string desc2 = 3;
+  string desc3 = 4;
+  string desc4 = 5;
+}
+
