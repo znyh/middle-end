@@ -1,0 +1,16 @@
+.idea
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.iws
+*.iml
+*.ipr
+*.log
+logs
+bin
+
+debug

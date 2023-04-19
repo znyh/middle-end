@@ -1,0 +1,53 @@
+// 定义项目 API 的 proto 文件 可以同时描述 gRPC 和 HTTP API
+// protobuf 文件参考:
+//  - https://developers.google.com/protocol-buffers/
+syntax = "proto3";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/protobuf/empty.proto";
+//import "vendor/google/api/annotations.proto";
+//import "google/protobuf/timestamp.proto";
+
+// package 命名使用 {appid}.{version} 的方式, version 形如 v1, v2 ..
+package hys_auth.v1;
+
+
+option go_package = "proto";
+option (gogoproto.goproto_getters_all) = false;
+
+service Auth {
+    rpc GetToken(Userinfo) returns (Token);
+    rpc UpdateToken(.google.protobuf.Empty) returns (Token);
+    rpc VerifyToken(.google.protobuf.Empty) returns (VerifyResult);
+
+    //    {
+    //        option (google.api.http) = {
+    //            post:"/auth/gettoken"
+    //        };
+    //    };
+}
+
+message Userinfo {
+    string userid = 1 [(gogoproto.moretags)='form:"name" validate:"required"'];
+}
+
+message Token {
+    int64 ErroeCode = 1 [(gogoproto.jsontag) = 'ErrorCode'];
+    //    google.protobuf.Timestamp expire = 2 [(gogoproto.jsontag) = 'expire'];
+    string message = 3 [(gogoproto.jsontag) = 'message'];
+    string Token = 4 [(gogoproto.jsontag) = 'Token'];
+}
+
+message Update{
+    string Token = 1 [(gogoproto.jsontag) = 'Token'];
+}
+
+//message Verify{
+//    string Token = 1 [(gogoproto.jsontag) = 'Token'];
+//}
+
+message VerifyResult{
+    int64 ErroeCode = 1 [(gogoproto.jsontag) = 'ErrorCode'];
+    bool Verify = 2 [(gogoproto.jsontag) = 'Verify'];
+    string message = 3 [(gogoproto.jsontag) = 'message'];
+}

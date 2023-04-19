@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package comet.proto;
+option go_package = "proto";
+option (gogoproto.goproto_getters_all) = false;
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+message Body {
+    int64 playerId = 1 [(gogoproto.jsontag) = "PlayerId"];
+    int32 ops = 2 [(gogoproto.jsontag) = "Ops"];
+    bytes data = 3 [(gogoproto.jsontag) = "Data"];
+}
+
+message Payload {
+    int32 op = 1 [(gogoproto.jsontag) = "op"];
+    //占位，无用
+    int32 place = 2 [(gogoproto.jsontag) = "place"];
+    //消息类型：Push、Request、Response、Ping、Pong、Sub、Unsub、Pub
+    int32 type = 3 [(gogoproto.jsontag) = "type"];
+    //序列号，回包需对应
+    int32 seq = 4 [(gogoproto.jsontag) = "seq"];
+    //错误码，回包参数
+    int32 code = 5 [(gogoproto.jsontag) = "code"];
+    //包体
+    bytes body = 6 [(gogoproto.jsontag) = "body"];
+}
