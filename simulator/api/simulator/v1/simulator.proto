@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package simulator.v1;
+
+import "google/api/annotations.proto";
+
+option go_package           = "simulator/api/simulator/v1;v1";
+option java_multiple_files  = true;
+option java_package         = "dev.kratos.api.simulator.v1";
+option java_outer_classname = "SimulatorProtoV1";
+
+// The simulator service definition.
+service Simulator {
+    // Sends a greeting
+    rpc SayHello(HelloReq) returns (HelloRsp) {
+        option (google.api.http) = {
+            get: "/hello/{name}"
+        };
+    }
+    rpc OnBetReq(BetReq) returns (BetRsp) {
+        option (google.api.http) = {
+            post: "/api/OnBetReq"
+            body: "*"
+        };
+    };
+    rpc OnCancelBetReq(CancelBetReq) returns (CancelBetRsp) {
+        option (google.api.http) = {
+            post: "/api/OnCancelBetReq"
+            body: "*"
+        };
+    };
+    rpc OnGetBetListReq(GetBetListReq) returns (GetBetListRsp) {
+        option (google.api.http) = {
+            post: "/api/OnGetBetListReq"
+            body: "*"
+        };
+    };
+}
+
+// The request message containing the user's name.
+message HelloReq {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message HelloRsp {
+    string message = 1;
+}
+
+message BetReq {
+    //游戏ID
+    int32 gameID = 1;
+    //playerID
+    int64 uid = 2;
+}
+
+message BetRsp {
+}
+
+message CancelBetReq {
+}
+
+message CancelBetRsp {
+}
+
+message GetBetListReq {
+}
+
+message GetBetListRsp {
+}
