@@ -3,6 +3,8 @@ package biz
 import (
     "context"
 
+    v1 "simulator/api/simulator/v1"
+
     "github.com/go-kratos/kratos/v2/log"
 )
 
@@ -26,4 +28,14 @@ func NewUsecase(repo UseRepo, logger log.Logger) *Usecase {
 func (uc *Usecase) SayHello(ctx context.Context) error {
     uc.log.WithContext(ctx).Infof("CreateGreeter: %v", "g.Hello")
     return uc.repo.Save(ctx)
+}
+
+func (uc *Usecase) OnBetReq(ctx context.Context, in *v1.BetReq) (*v1.BetRsp, error) {
+    rsp := &v1.BetRsp{
+        GameID: in.GameID,
+        Uid:    in.Uid,
+        Data:   in.Data,
+    }
+    uc.log.WithContext(ctx).Infof("OnBetReq: %v rsp: %+v", in, rsp)
+    return rsp, nil
 }

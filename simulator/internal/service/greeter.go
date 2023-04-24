@@ -30,7 +30,8 @@ func (s *SimulatorService) SayHello(ctx context.Context, in *v1.HelloReq) (*v1.H
 
 // OnBetReq implements OnBetReq
 func (s *SimulatorService) OnBetReq(ctx context.Context, in *v1.BetReq) (*v1.BetRsp, error) {
-    return nil, nil
+    rsp, err := s.uc.OnBetReq(ctx, in)
+    return rsp, err
 }
 
 // OnCancelBetReq implements OnCancelBetReq

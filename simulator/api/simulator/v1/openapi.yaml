@@ -111,15 +111,23 @@ components:
             properties:
                 gameID:
                     type: integer
-                    description: 游戏ID
                     format: int32
                 uid:
                     type: integer
-                    description: playerID
                     format: int64
+                data:
+                    type: string
         BetRsp:
             type: object
-            properties: {}
+            properties:
+                gameID:
+                    type: integer
+                    format: int32
+                uid:
+                    type: integer
+                    format: int64
+                data:
+                    type: string
         CancelBetReq:
             type: object
             properties: {}

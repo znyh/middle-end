@@ -48,13 +48,15 @@ message HelloRsp {
 }
 
 message BetReq {
-    //游戏ID
-    int32 gameID = 1;
-    //playerID
-    int64 uid = 2;
+    int32 gameID = 1;  //游戏ID
+    int64 uid    = 2;  //playerID
+    string data  = 3;
 }
 
 message BetRsp {
+    int32 gameID = 1;  //游戏ID
+    int64 uid    = 2;  //playerID
+    string data  = 3;
 }
 
 message CancelBetReq {
