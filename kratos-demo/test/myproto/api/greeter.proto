@@ -3,7 +3,7 @@ syntax = "proto3";
 package helloworld.v1;
 
 import "google/api/annotations.proto";
-import "gogoproto/gogo.proto";
+//import "gogoproto/gogo.proto";
 
 option go_package           = "kratos-demo/api/helloworld/v1;v1";
 option java_multiple_files  = true;
@@ -30,6 +30,6 @@ message HelloReply {
     int32 code     = 1;
     string msg     = 2;
     string message = 3;
-    int32 GameID   = 4 [(gogoproto.jsontag) = "GameID"];
-    int32 GroupID  = 5 [(gogoproto.jsontag) = "GroupID"];
+    //    int32 GameID   = 4 [(gogoproto.jsontag) = "GameID"];
+    //    int32 GroupID  = 5 [(gogoproto.jsontag) = "GroupID"];
 }

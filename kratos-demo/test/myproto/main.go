@@ -7,14 +7,32 @@ import (
 
     "github.com/gin-gonic/gin"
     "github.com/go-kratos/kratos/v2/log"
+    "github.com/go-kratos/swagger-api/openapiv2"
 )
 
 func main() {
-    r := gin.Default()
-    r.POST("dump", dump)
-    log.Fatal(r.Run(":8000"))
+    //r.HandlePrefix("/q/", openAPIhandler) //http://127.0.0.1:8000/q/swagger-ui/
+    log.Infof("%+v", "http://127.0.0.1:8000/q/swagger-ui/")
+    http.Handle("/q", openapiv2.NewHandler())
+    //http.HandleFunc("/", homeHandler)
+    http.ListenAndServe(":8000", nil)
+
 }
 
+//func homeHandler(w http.ResponseWriter, r *http.Request) {
+//    fmt.Fprintf(w, "Hello, Golang!")
+//}
+
+func main3() {
+    r := gin.Default()
+    r.POST("/dump", dump)
+
+    //
+    //h.Handler = openAPIhandler
+
+    log.Fatal(r.Run(":8000"))
+
+}
 func dump(c *gin.Context) {
     req := v1.HelloRequest{}
     if err := c.ShouldBindJSON(&req); err != nil {
