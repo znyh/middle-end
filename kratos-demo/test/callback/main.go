@@ -1,44 +1,3 @@
-//package main
-//
-//import (
-//    "fmt"
-//)
-//
-//type Callback func(x, y int) int
-//
-//// 提供一个接口，让外部去实现
-//func test(x, y int, callback Callback) int {
-//    return callback(x, y)
-//}
-//
-//// 回调函数的具体实现
-//func add(x, y int) int {
-//    return x + y
-//}
-//
-//func main() {
-//    x, y := 1, 2
-//
-//    result := test(x, y, add)
-//    fmt.Println(result)
-//}
-
-//package main
-//
-//import "fmt"
-//
-//func main() {
-//    m := added()
-//    fmt.Println(m(33, 44))
-//}
-//
-//func added() func(a, b int) int {
-//    f := func(a, b int) int {
-//        return a + b
-//    }
-//    return f
-//}
-
 package main
 
 import (
@@ -46,6 +5,48 @@ import (
     "math/rand"
     "time"
 )
+
+func main() {
+    main1()
+    main2()
+    main3()
+    main4()
+}
+
+type Callback func(x, y int) int
+
+func main1() {
+    x, y := 1, 2
+
+    result := test(x, y, add)
+    fmt.Println(result)
+}
+
+// 提供一个接口，让外部去实现
+func test(x, y int, callback Callback) int {
+    return callback(x, y)
+}
+
+// 回调函数的具体实现
+func add(x, y int) int {
+    return x + y
+}
+
+//----------------------------------------------------
+
+func main2() {
+    m := added()
+    fmt.Println(m(33, 44))
+}
+
+func added() func(a, b int) int {
+    f := func(a, b int) int {
+        return a + b
+    }
+    return f
+}
+
+//----------------------------------------------------
 
 // Call的基本定义，对外部使用者的请求、返回以及异步使用进行封装。
 type Call struct {
@@ -64,9 +65,7 @@ func (call *Call) done() {
     }
 }
 
-func main() {
-    main2()
-
+func main3() {
     for i := 0; i < 5; i++ {
         var reply *int
         call := GO(i, reply, nil) //获取到了call，但此时call.Reply还不是运算结果
@@ -108,6 +107,25 @@ func caculate(call *Call) {
     call.done()
 }
 
+//----------------------------------------------------
+func main4() {
+    rand.Seed(time.Now().UnixNano())
+    reFunc(3, func() error {
+        x := rand.Intn(100)
+        if x%2 == 0 {
+            return fmt.Errorf("-->")
+        }
+        return nil
+    })
+
+    reFunc2(3, func(a int) error {
+        if a%2 == 0 {
+            return fmt.Errorf("-->")
+        }
+        return nil
+    })
+}
+
 func reFunc(reNum int, f func() error) {
     for i := 0; i < reNum; i++ {
         err := f()
@@ -124,22 +142,4 @@ func reFunc2(reNum int, f func(a int) error) {
             return
         }
     }
-}
-
-func main2() {
-    rand.Seed(time.Now().UnixNano())
-    reFunc(3, func() error {
-        x := rand.Intn(100)
-        if x%2 == 0 {
-            return fmt.Errorf("-->")
-        }
-        return nil
-    })
-
-    reFunc2(3, func(a int) error {
-        if a%2 == 0 {
-            return fmt.Errorf("-->")
-        }
-        return nil
-    })
 }
