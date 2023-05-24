@@ -7,6 +7,8 @@ import (
     "os"
     "time"
 
+    v1 "kratos-demo/api/helloworld/v1"
+
     "github.com/gin-gonic/gin"
     "github.com/xjieinfo/xjgo/xjcore/xjexcel"
 )
@@ -14,6 +16,7 @@ import (
 func main() {
     router := gin.Default()
     router.GET("/dump", dump)
+    router.POST("/api/OnBetReq", post)
     router.Run(":8000")
 }
 
@@ -86,4 +89,17 @@ func dump(c *gin.Context) {
     c.Writer.Header().Add("Content-Disposition", fmt.Sprintf("attachment; filename=%s", fileName)) //fmt.Sprintf("attachment; filename=%s", filename)对下载的文件重命名
     c.Writer.Header().Add("Content-Type", "application/octet-stream")
     c.File(filePathName)
+}
+
+func post(c *gin.Context) {
+    req := v1.BetReq{}
+    if err := c.ShouldBindJSON(&req); err != nil {
+        log.Printf("err:%+v", err)
+    }
+    rsp := v1.BetRsp{
+        GameID: req.GameID,
+        Uid:    req.Uid,
+        Data:   fmt.Sprintf("xx - %+v", req.Data),
+    }
+    c.JSON(http.StatusOK, &rsp)
 }
